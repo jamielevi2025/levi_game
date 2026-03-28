@@ -1,0 +1,86 @@
+[gd_scene format=3 uid="uid://rcher"]
+
+[ext_resource type="Script" uid="uid://bo5do83h7d0yt" path="res://scripts/Archer.gd" id="1_archer"]
+[ext_resource type="Texture2D" uid="uid://bqvipdelubp88" path="res://assets/sprites/Bow.png" id="3_bow"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
+radius = 32.0
+height = 94.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bow_1"]
+atlas = ExtResource("3_bow")
+region = Rect2(48, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bow_2"]
+atlas = ExtResource("3_bow")
+region = Rect2(96, 0, 48, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bow_0"]
+atlas = ExtResource("3_bow")
+region = Rect2(0, 0, 48, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bow"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bow_1")
+}],
+"loop": true,
+"name": &"drawing",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bow_2")
+}],
+"loop": true,
+"name": &"full_draw",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bow_0")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 1.0
+}]
+
+[node name="Archer" type="CharacterBody2D" unique_id=179516639]
+script = ExtResource("1_archer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=941728575]
+position = Vector2(0, -30)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_1")
+
+[node name="BowPivot" type="Node2D" parent="." unique_id=2058106965]
+position = Vector2(0, -10)
+
+[node name="TrajectoryLine" type="Line2D" parent="." unique_id=522091436]
+width = 2.0
+default_color = Color(1, 1, 1, 0.4)
+
+[node name="HealthBarContainer" type="Node2D" parent="." unique_id=1398220177]
+visible = false
+position = Vector2(0, -70)
+
+[node name="HealthBarBG" type="ColorRect" parent="HealthBarContainer" unique_id=273958270]
+offset_left = -25.0
+offset_right = 25.0
+offset_bottom = 6.0
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="HealthBarFill" type="ColorRect" parent="HealthBarContainer" unique_id=2000836530]
+offset_left = -25.0
+offset_right = 25.0
+offset_bottom = 6.0
+color = Color(0.2, 0.9, 0.2, 1)
+
+[node name="BowSprite" type="AnimatedSprite2D" parent="." unique_id=400000001]
+texture_filter = 1
+position = Vector2(1, -26)
+scale = Vector2(3.312499, 3.3125)
+sprite_frames = SubResource("SpriteFrames_bow")
+animation = &"idle"
+frame_progress = 0.6110095

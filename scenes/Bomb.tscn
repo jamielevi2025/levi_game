@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://bomb"]
+
+[ext_resource type="Script" uid="uid://cev0get1eti0s" path="res://scripts/Bomb.gd" id="1_bomb"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1"]
+radius = 18.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2"]
+radius = 140.0
+
+[node name="Bomb" type="Node2D" unique_id=200000001]
+script = ExtResource("1_bomb")
+
+[node name="Visual" type="ColorRect" parent="." unique_id=200000002]
+offset_left = -14.0
+offset_top = -14.0
+offset_right = 14.0
+offset_bottom = 14.0
+color = Color(0.9, 0.1, 0.1, 1)
+
+[node name="WarningCircle" type="ColorRect" parent="." unique_id=200000003]
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(1, 0.3019608, 0, 0.49803922)
+
+[node name="ArrowDetector" type="Area2D" parent="." unique_id=200000008]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ArrowDetector" unique_id=200000009]
+shape = SubResource("CircleShape2D_1")
+
+[node name="ExplosionArea" type="Area2D" parent="." unique_id=200000006]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExplosionArea" unique_id=200000007]
+shape = SubResource("CircleShape2D_2")
+disabled = true

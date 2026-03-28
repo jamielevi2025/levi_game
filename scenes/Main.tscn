@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://main"]
+
+[ext_resource type="Script" uid="uid://v3p8da01yf7e" path="res://scripts/Main.gd" id="1_main"]
+[ext_resource type="PackedScene" uid="uid://rcher" path="res://scenes/Archer.tscn" id="2_archer"]
+
+[node name="Main" type="Node2D" unique_id=696727164]
+script = ExtResource("1_main")
+
+[node name="Background" type="ColorRect" parent="." unique_id=21790019]
+offset_right = 540.0
+offset_bottom = 960.0
+color = Color(0.1, 0.2, 0.1, 1)
+
+[node name="DangerLine" type="Line2D" parent="." unique_id=1852369594]
+points = PackedVector2Array(0, 700, 540, 700)
+width = 2.0
+default_color = Color(1, 0, 0, 0.4)
+
+[node name="Archer" parent="." unique_id=1648650943 instance=ExtResource("2_archer")]
+position = Vector2(270, 860)

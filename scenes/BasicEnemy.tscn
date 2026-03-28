@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://basicenemy"]
+
+[ext_resource type="Script" uid="uid://bclqx4posymaq" path="res://scripts/BasicEnemy.gd" id="1_basicenemy"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
+radius = 18.0
+height = 36.0
+
+[node name="BasicEnemy" type="CharacterBody2D" unique_id=122265333]
+script = ExtResource("1_basicenemy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1381298582]
+position = Vector2(0, -19)
+shape = SubResource("CapsuleShape2D_1")
+
+[node name="Visual" type="ColorRect" parent="." unique_id=1039710298]
+offset_left = -18.0
+offset_top = -36.0
+offset_right = 18.0
+color = Color(0.5568628, 0.16470589, 0.22352941, 1)
+
+[node name="HealthBarContainer" type="Node2D" parent="." unique_id=2105228390]
+position = Vector2(0, -50)
+
+[node name="HealthBarBG" type="ColorRect" parent="HealthBarContainer" unique_id=1317428431]
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 6.0
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="HealthBarFill" type="ColorRect" parent="HealthBarContainer" unique_id=222305443]
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 6.0
+color = Color(0.2, 0.9, 0.2, 1)

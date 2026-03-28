@@ -1,0 +1,162 @@
+[gd_scene load_steps=2 format=3 uid="uid://upgradescreen"]
+
+[ext_resource type="Script" path="res://scripts/UpgradeScreen.gd" id="1_upgradescreen"]
+
+[node name="UpgradeScreen" type="CanvasLayer"]
+visible = false
+script = ExtResource("1_upgradescreen")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 540.0
+offset_bottom = 960.0
+color = Color(0.0, 0.0, 0.0, 0.6)
+
+[node name="TitleLabel" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_right = 150.0
+offset_top = 290.0
+offset_bottom = 340.0
+text = "CHOOSE AN UPGRADE"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 22
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+offset_left = 44.0
+offset_top = 370.0
+offset_right = 496.0
+offset_bottom = 590.0
+theme_override_constants/separation = 16
+
+[node name="Card1" type="PanelContainer" parent="HBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(140, 220)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Card1"]
+layout_mode = 1
+anchors_preset = 15
+theme_override_constants/separation = 6
+
+[node name="TierLabel" type="Label" parent="HBoxContainer/Card1/VBoxContainer"]
+layout_mode = 2
+text = "COMMON"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 11
+
+[node name="NameLabel" type="Label" parent="HBoxContainer/Card1/VBoxContainer"]
+layout_mode = 2
+text = "Upgrade Name"
+horizontal_alignment = 1
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 15
+
+[node name="LevelLabel" type="Label" parent="HBoxContainer/Card1/VBoxContainer"]
+layout_mode = 2
+text = "New!"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.6, 0.9, 0.4, 1.0)
+
+[node name="HSeparator" type="HSeparator" parent="HBoxContainer/Card1/VBoxContainer"]
+layout_mode = 2
+
+[node name="DescLabel" type="Label" parent="HBoxContainer/Card1/VBoxContainer"]
+layout_mode = 2
+text = "Description text"
+horizontal_alignment = 1
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 12
+
+[node name="SelectButton" type="Button" parent="HBoxContainer/Card1/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(120, 36)
+text = "Choose"
+
+[node name="Card2" type="PanelContainer" parent="HBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(140, 220)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Card2"]
+layout_mode = 1
+anchors_preset = 15
+theme_override_constants/separation = 6
+
+[node name="TierLabel" type="Label" parent="HBoxContainer/Card2/VBoxContainer"]
+layout_mode = 2
+text = "COMMON"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 11
+
+[node name="NameLabel" type="Label" parent="HBoxContainer/Card2/VBoxContainer"]
+layout_mode = 2
+text = "Upgrade Name"
+horizontal_alignment = 1
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 15
+
+[node name="LevelLabel" type="Label" parent="HBoxContainer/Card2/VBoxContainer"]
+layout_mode = 2
+text = "New!"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.6, 0.9, 0.4, 1.0)
+
+[node name="HSeparator" type="HSeparator" parent="HBoxContainer/Card2/VBoxContainer"]
+layout_mode = 2
+
+[node name="DescLabel" type="Label" parent="HBoxContainer/Card2/VBoxContainer"]
+layout_mode = 2
+text = "Description text"
+horizontal_alignment = 1
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 12
+
+[node name="SelectButton" type="Button" parent="HBoxContainer/Card2/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(120, 36)
+text = "Choose"
+
+[node name="Card3" type="PanelContainer" parent="HBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(140, 220)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Card3"]
+layout_mode = 1
+anchors_preset = 15
+theme_override_constants/separation = 6
+
+[node name="TierLabel" type="Label" parent="HBoxContainer/Card3/VBoxContainer"]
+layout_mode = 2
+text = "COMMON"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 11
+
+[node name="NameLabel" type="Label" parent="HBoxContainer/Card3/VBoxContainer"]
+layout_mode = 2
+text = "Upgrade Name"
+horizontal_alignment = 1
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 15
+
+[node name="LevelLabel" type="Label" parent="HBoxContainer/Card3/VBoxContainer"]
+layout_mode = 2
+text = "New!"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.6, 0.9, 0.4, 1.0)
+
+[node name="HSeparator" type="HSeparator" parent="HBoxContainer/Card3/VBoxContainer"]
+layout_mode = 2
+
+[node name="DescLabel" type="Label" parent="HBoxContainer/Card3/VBoxContainer"]
+layout_mode = 2
+text = "Description text"
+horizontal_alignment = 1
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 12
+
+[node name="SelectButton" type="Button" parent="HBoxContainer/Card3/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(120, 36)
+text = "Choose"

@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://boss"]
+
+[ext_resource type="Script" uid="uid://d6rg7f130qjw" path="res://scripts/Boss.gd" id="1_boss"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
+radius = 20.0
+height = 40.0
+
+[node name="Boss" type="CharacterBody2D" unique_id=188670045]
+script = ExtResource("1_boss")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=218690834]
+position = Vector2(0, -20)
+shape = SubResource("CapsuleShape2D_1")
+
+[node name="Visual" type="ColorRect" parent="." unique_id=42151513]
+offset_left = -22.0
+offset_top = -50.0
+offset_right = 22.0
+color = Color(0.7, 0.1, 0.7, 1)
+
+[node name="HealthBarContainer" type="Node2D" parent="." unique_id=1511364764]
+position = Vector2(0, -50)
+
+[node name="HealthBarBG" type="ColorRect" parent="HealthBarContainer" unique_id=995159531]
+offset_left = -50.0
+offset_right = 50.0
+offset_bottom = 8.0
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="HealthBarFill" type="ColorRect" parent="HealthBarContainer" unique_id=1702485011]
+offset_left = -50.0
+offset_right = 50.0
+offset_bottom = 8.0
+color = Color(0.8, 0.1, 0.1, 1)
+
+[node name="BossLabel" type="Label" parent="." unique_id=2054935892]
+offset_left = -20.0
+offset_top = -70.0
+offset_right = -20.0
+offset_bottom = -70.0
+theme_override_font_sizes/font_size = 14
+text = "BOSS"
