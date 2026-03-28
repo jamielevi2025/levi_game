@@ -57,6 +57,11 @@ func _ready() -> void:
 		Engine.time_scale = 1.0
 		get_tree().change_scene_to_file("res://scenes/MainMenu.tscn")
 	)
+	var safety_timer: Timer = Timer.new()
+	safety_timer.wait_time = 2.0
+	safety_timer.autostart = true
+	safety_timer.timeout.connect(on_enemy_count_safety_check)
+	add_child(safety_timer)
 	get_tree().create_timer(2.0).timeout.connect(start_next_wave)
 
 
@@ -126,14 +131,33 @@ func spawn_enemy() -> void:
 func on_enemy_died(death_position: Vector2, xp_amount: int) -> void:
 	enemies_alive = max(0, enemies_alive - 1)
 	hud.update_enemy_count(enemies_alive)
-	if enemies_alive <= 0 and is_wave_active and _remaining_spawns <= 0:
-		is_wave_active = false
-		get_tree().create_timer(3.0).timeout.connect(start_next_wave)
 	var orb: XPOrb = XP_ORB_SCENE.instantiate()
 	orb.setup(xp_amount)
 	orb.position = death_position
 	orb.collected.connect(on_xp_collected)
 	add_child(orb)
+	on_enemy_died_check()
+
+
+func on_enemy_died_check() -> void:
+	if enemies_alive <= 0 and is_wave_active and _remaining_spawns <= 0 and not is_boss_phase:
+		is_wave_active = false
+		get_tree().create_timer(3.0).timeout.connect(start_next_wave)
+
+
+func on_enemy_count_safety_check() -> void:
+	if not is_wave_active:
+		return
+	if is_boss_phase:
+		return
+	var actual_count: int = get_tree().get_nodes_in_group("enemies").size()
+	if actual_count == 0 and enemies_alive > 0:
+		print("WARNING: enemies_alive was ", enemies_alive, " but no enemies found. Correcting.")
+		enemies_alive = 0
+		on_enemy_died_check()
+	elif actual_count != enemies_alive and actual_count > 0:
+		enemies_alive = actual_count
+		hud.update_enemy_count(enemies_alive)
 
 
 func show_upgrade_screen() -> void:

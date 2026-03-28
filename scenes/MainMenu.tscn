@@ -51,28 +51,44 @@ theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1.0)
 
 [node name="ModeButtons" type="HBoxContainer" parent="MenuContainer"]
 layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 20
 
-[node name="ModeBow" type="Button" parent="MenuContainer/ModeButtons"]
+[node name="PointClickContainer" type="VBoxContainer" parent="MenuContainer/ModeButtons"]
 layout_mode = 2
-custom_minimum_size = Vector2(100.0, 40.0)
-text = "Bow"
 
-[node name="ModePointClick" type="Button" parent="MenuContainer/ModeButtons"]
+[node name="ModePointClick" type="Button" parent="MenuContainer/ModeButtons/PointClickContainer"]
 layout_mode = 2
-custom_minimum_size = Vector2(100.0, 40.0)
+custom_minimum_size = Vector2(140.0, 44.0)
 text = "Point & Click"
 
-[node name="ModeAutoAim" type="Button" parent="MenuContainer/ModeButtons"]
+[node name="RecommendedLabel" type="Label" parent="MenuContainer/ModeButtons/PointClickContainer"]
 layout_mode = 2
-custom_minimum_size = Vector2(100.0, 40.0)
-text = "Auto-Aim"
+text = "Recommended"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 10
+theme_override_colors/font_color = Color(1.0, 0.85, 0.0, 1.0)
+theme_override_font_styles/font_style = 1
+
+[node name="DragAimContainer" type="VBoxContainer" parent="MenuContainer/ModeButtons"]
+layout_mode = 2
+
+[node name="ModeBow" type="Button" parent="MenuContainer/ModeButtons/DragAimContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(140.0, 44.0)
+text = "Drag & Aim"
+
+[node name="SpacerLabel" type="Label" parent="MenuContainer/ModeButtons/DragAimContainer"]
+layout_mode = 2
+text = ""
+theme_override_font_sizes/font_size = 10
 
 [node name="ModeDescLabel" type="Label" parent="."]
 offset_left = 70.0
 offset_top = 705.0
 offset_right = 470.0
 offset_bottom = 745.0
-text = "Click, drag down, and release to fire"
+text = "Tap anywhere to fire toward your cursor"
 horizontal_alignment = 1
 theme_override_font_sizes/font_size = 13
 theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1.0)

@@ -80,6 +80,8 @@ var upgrade_levels: Dictionary = {}
 
 var current_bow_state: String = "idle"
 var locked_aim_angle: float = 0.0
+var is_animating_shot: bool = false
+var shot_anim_timer: float = 0.0
 
 
 func _ready() -> void:
@@ -103,13 +105,26 @@ func _physics_process(delta: float) -> void:
 			"auto_aim":
 				_fire_auto_aim()
 	update_bow_rotation()
-	var drag_dist: float = (get_global_mouse_position() - drag_start).length() if is_drawing else 0.0
-	if not is_drawing:
-		update_bow_state("idle")
-	elif drag_dist < max_drag_distance * 0.5:
-		update_bow_state("drawing")
+	if GameSettings.control_mode == "bow":
+		var drag_dist: float = (get_global_mouse_position() - drag_start).length() if is_drawing else 0.0
+		if not is_drawing:
+			update_bow_state("idle")
+		elif drag_dist < max_drag_distance * 0.5:
+			update_bow_state("drawing")
+		else:
+			update_bow_state("full_draw")
 	else:
-		update_bow_state("full_draw")
+		if is_animating_shot:
+			shot_anim_timer += delta
+			if shot_anim_timer < 0.08:
+				update_bow_state("drawing")
+			elif shot_anim_timer < 0.18:
+				update_bow_state("full_draw")
+			else:
+				update_bow_state("idle")
+				is_animating_shot = false
+		else:
+			update_bow_state("idle")
 
 
 func update_bow_state(state: String) -> void:
@@ -176,6 +191,8 @@ func fire(drag: Vector2) -> void:
 func _fire_toward_position(target_pos: Vector2) -> void:
 	if arrow_scene == null or fire_cooldown > 0:
 		return
+	is_animating_shot = true
+	shot_anim_timer = 0.0
 	_fire_in_direction((target_pos - global_position).normalized(), 1.0)
 
 

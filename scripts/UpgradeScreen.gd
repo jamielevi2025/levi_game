@@ -43,7 +43,7 @@ func show_screen(upgrades: Array, upgrade_levels_dict: Dictionary = {}) -> void:
 			level_label.text = "New!"
 			level_label.modulate = Color(0.6, 0.9, 0.4)
 		else:
-			level_label.text = "Lv. " + str(current_level) + " → " + str(current_level + 1)
+			level_label.text = "Lv. " + str(current_level) + " > " + str(current_level + 1)
 			level_label.modulate = Color(1.0, 0.85, 0.4)
 
 		vbox.get_node("DescLabel").text = UpgradeData.next_level_description(u.id, current_level)

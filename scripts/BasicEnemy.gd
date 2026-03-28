@@ -12,6 +12,7 @@ var xp_value: int = 5
 var danger_line_y: float = 700.0
 var archer_position: Vector2 = Vector2(270, 860)
 var is_dead: bool = false
+var spawn_protection: bool = true
 var _is_poisoned: bool = false
 var _poison_tick_timer: Timer = null
 
@@ -21,6 +22,12 @@ var _poison_tick_timer: Timer = null
 
 func _ready() -> void:
 	add_to_group("enemies")
+	var protection_timer: Timer = Timer.new()
+	protection_timer.wait_time = 0.1
+	protection_timer.one_shot = true
+	protection_timer.timeout.connect(func(): spawn_protection = false)
+	add_child(protection_timer)
+	protection_timer.start()
 
 
 func _physics_process(_delta: float) -> void:
@@ -50,6 +57,8 @@ func setup(hp: float, speed: float) -> void:
 
 
 func take_damage(amount: float) -> void:
+	if spawn_protection:
+		return
 	if is_dead:
 		return
 	current_hp -= amount
