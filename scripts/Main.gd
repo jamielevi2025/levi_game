@@ -83,7 +83,7 @@ func start_next_wave() -> void:
 		start_boss_phase()
 		return
 	is_wave_active = true
-	_remaining_spawns = wave_enemy_counts[current_wave - 1] + (current_level - 1) * 2
+	_remaining_spawns = wave_enemy_counts[current_wave - 1] + round((current_level - 1) * (current_level / 2.0))
 	hud.update_wave(current_wave, current_level)
 	_spawn_timer = Timer.new()
 	_spawn_timer.wait_time = spawn_interval
@@ -111,7 +111,7 @@ func start_boss_phase() -> void:
 	boss.bomb_scene = BOMB_SCENE
 	boss.archer_ref = $Archer
 	boss.current_level = current_level
-	boss.setup(200.0 + (current_level - 1) * 100.0, 60.0)
+	boss.setup(round(150.0 * pow(1.30, current_level - 1)), 60.0)
 	boss.died.connect(on_boss_died)
 	add_child(boss)
 	hud.update_wave(current_wave, current_level)
@@ -134,8 +134,8 @@ func on_boss_died(death_position: Vector2, xp_amount: int) -> void:
 func spawn_enemy() -> void:
 	var enemy: BasicEnemy = ENEMY_SCENE.instantiate()
 	enemy.position = Vector2(randf_range(40.0, 500.0), -40.0)
-	var hp: float = 30.0 + (current_level - 1) * 15.0
-	var speed: float = 80.0 + (current_level - 1) * 10.0
+	var hp: float = round(30.0 * pow(1.25, current_level - 1))
+	var speed: float = min(80.0 * pow(1.1, current_level - 1), 300.0)
 	enemy.setup(hp, speed)
 	enemy.died.connect(on_enemy_died)
 	add_child(enemy)

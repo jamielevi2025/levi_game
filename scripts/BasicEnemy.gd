@@ -18,6 +18,9 @@ var hurt_timer: float = 0.0
 var hurt_duration: float = 1.0
 var _is_poisoned: bool = false
 var _poison_tick_timer: Timer = null
+var current_slow_factor: float = 1.0
+var base_move_speed: float = 0.0
+var _slow_id: int = 0
 
 @onready var health_bar_fill: ColorRect = $HealthBarContainer/HealthBarFill
 @onready var anim_sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -26,6 +29,7 @@ var _poison_tick_timer: Timer = null
 
 func _ready() -> void:
 	add_to_group("enemies")
+	base_move_speed = move_speed
 	anim_sprite.modulate = Color(1, 1, 1)
 	anim_sprite.play("default")
 	var protection_timer: Timer = Timer.new()
@@ -83,14 +87,18 @@ func take_damage(amount: float) -> void:
 
 
 func apply_slow(factor: float, duration: float) -> void:
-	var original_speed: float = move_speed
-	move_speed *= (1.0 - factor)
+	if factor >= current_slow_factor:
+		return
+	current_slow_factor = factor
+	move_speed = base_move_speed * factor
 	freeze_indicator.visible = true
-	get_tree().create_timer(duration).timeout.connect(func():
-		if is_instance_valid(self) and not is_dead:
-			move_speed = original_speed
-			freeze_indicator.visible = false
-	)
+	_slow_id += 1
+	var my_id := _slow_id
+	await get_tree().create_timer(duration).timeout
+	if is_instance_valid(self) and not is_dead and _slow_id == my_id:
+		move_speed = base_move_speed
+		current_slow_factor = 1.0
+		freeze_indicator.visible = false
 
 
 func apply_poison(damage_per_sec: float, duration: float) -> void:

@@ -110,10 +110,10 @@ static func get_random_upgrades(count: int, upgrade_levels_dict: Dictionary = {}
 	var weights: Array = []
 	for u in available:
 		match u.tier:
-			"common":    weights.append(9)
-			"rare":      weights.append(5)
-			"epic":      weights.append(2)
-			"legendary": weights.append(.25)
+			"common":    weights.append(63)
+			"rare":      weights.append(25)
+			"epic":      weights.append(10)
+			"legendary": weights.append(2)
 
 	var result: Array = []
 	for _i in range(count):
