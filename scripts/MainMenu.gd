@@ -10,6 +10,7 @@ class_name MainMenu
 
 func _ready() -> void:
 	Engine.time_scale = 1.0
+	$MenuContainer/VolumeControls.refresh()
 	play_button.pressed.connect(func():
 		get_tree().change_scene_to_file("res://scenes/Main.tscn")
 	)

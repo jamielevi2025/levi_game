@@ -37,6 +37,7 @@ shape = SubResource("CircleShape2D_1")
 
 [node name="CollectSound" type="AudioStreamPlayer" parent="." unique_id=1124544664]
 stream = ExtResource("2_coinsound")
+bus = &"SFX"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=67465087]
 sprite_frames = SubResource("SpriteFrames_nijym")

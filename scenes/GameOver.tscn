@@ -1,56 +1,56 @@
-[gd_scene load_steps=2 format=3 uid="uid://gameover"]
+[gd_scene format=3 uid="uid://gameover"]
 
-[ext_resource type="Script" path="res://scripts/GameOver.gd" id="1_gameover"]
+[ext_resource type="Script" uid="uid://bugpla7671e6f" path="res://scripts/GameOver.gd" id="1_gameover"]
 
-[node name="GameOver" type="CanvasLayer"]
+[node name="GameOver" type="CanvasLayer" unique_id=1640562497]
 visible = false
 script = ExtResource("1_gameover")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=1564303126]
 offset_right = 540.0
 offset_bottom = 960.0
-color = Color(0.0, 0.0, 0.0, 0.7)
+color = Color(0, 0, 0, 0.7)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=264754760]
+anchors_preset = 8
 anchor_left = 0.5
-anchor_right = 0.5
 anchor_top = 0.5
+anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -100.0
-offset_right = 100.0
 offset_top = -120.0
+offset_right = 100.0
 offset_bottom = 120.0
 alignment = 1
 
-[node name="TitleLabel" type="Label" parent="VBoxContainer"]
+[node name="TitleLabel" type="Label" parent="VBoxContainer" unique_id=1298097065]
 layout_mode = 2
+theme_override_font_sizes/font_size = 32
 text = "GAME OVER"
 horizontal_alignment = 1
-theme_override_font_sizes/font_size = 32
 
-[node name="StatsLabel" type="Label" parent="VBoxContainer"]
+[node name="StatsLabel" type="Label" parent="VBoxContainer" unique_id=1918718565]
+modulate = Color(0.8, 0.8, 0.8, 1)
 layout_mode = 2
-modulate = Color(0.8, 0.8, 0.8, 1.0)
+theme_override_font_sizes/font_size = 16
 text = "You reached Level 1 - Wave 1"
 horizontal_alignment = 1
-theme_override_font_sizes/font_size = 16
 autowrap_mode = 3
 
-[node name="VSeparator" type="VSeparator" parent="VBoxContainer"]
+[node name="Control" type="Control" parent="VBoxContainer" unique_id=879364997]
 layout_mode = 2
-custom_minimum_size = Vector2(0, 20)
 
-[node name="RestartButton" type="Button" parent="VBoxContainer"]
-layout_mode = 2
+[node name="RestartButton" type="Button" parent="VBoxContainer" unique_id=16393390]
 custom_minimum_size = Vector2(160, 48)
+layout_mode = 2
 text = "Play Again"
 
-[node name="MenuButton" type="Button" parent="VBoxContainer"]
-layout_mode = 2
+[node name="MenuButton" type="Button" parent="VBoxContainer" unique_id=43519290]
 custom_minimum_size = Vector2(160, 48)
+layout_mode = 2
 text = "Main Menu"
 
-[node name="QuitButton" type="Button" parent="VBoxContainer"]
-layout_mode = 2
+[node name="QuitButton" type="Button" parent="VBoxContainer" unique_id=2030353775]
 custom_minimum_size = Vector2(160, 48)
+layout_mode = 2
 text = "Quit"

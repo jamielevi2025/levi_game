@@ -147,6 +147,8 @@ func _on_hitbox_area_entered(area: Node2D) -> void:
 	if not area is BossProjectile:
 		return
 	spawn_hit_effect(area.global_position)
+	if is_explosive:
+		explode()
 	area.queue_free()
 	if pierce_count > 0:
 		pierce_count -= 1

@@ -11,6 +11,7 @@ signal debug_pressed
 func show_pause() -> void:
 	visible = true
 	Engine.time_scale = 0.0
+	$VBoxContainer/VolumeControls.refresh()
 
 
 func hide_pause() -> void:

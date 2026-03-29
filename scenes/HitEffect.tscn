@@ -43,4 +43,5 @@ animation = &"hit"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1476178683]
 stream = ExtResource("3_761mu")
+bus = &"SFX"
 autoplay = true

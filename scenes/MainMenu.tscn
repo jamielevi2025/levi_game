@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://mainmenu"]
 
 [ext_resource type="Script" uid="uid://di6vnartiu53p" path="res://scripts/MainMenu.gd" id="1_mainmenu"]
+[ext_resource type="PackedScene" path="res://scenes/VolumeControls.tscn" id="2_volctrl"]
 
 [node name="MainMenu" type="Node2D" unique_id=744187360]
 script = ExtResource("1_mainmenu")
@@ -30,20 +31,39 @@ theme_override_font_sizes/font_size = 24
 text = "pew pew"
 horizontal_alignment = 1
 
+[node name="SubtitleLabel2" type="Label" parent="." unique_id=119371362]
+offset_left = 120.0
+offset_top = 251.0
+offset_right = 420.0
+offset_bottom = 287.0
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_font_sizes/font_size = 16
+text = "(2-d archer rogue-like)"
+horizontal_alignment = 1
+
 [node name="SubsubtitleLabel" type="Label" parent="." unique_id=909645589]
-offset_top = 921.0
+offset_top = 912.0
 offset_right = 538.0
-offset_bottom = 957.0
+offset_bottom = 932.0
 theme_override_colors/font_color = Color(0.43856144, 0.7263196, 1, 1)
 theme_override_font_sizes/font_size = 11
 text = "vibe-coded by levi"
 horizontal_alignment = 1
 
+[node name="SubsubtitleLabel2" type="Label" parent="." unique_id=1962936283]
+offset_top = 925.0
+offset_right = 538.0
+offset_bottom = 945.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 8
+text = "v0.2.2 - Peter Update"
+horizontal_alignment = 1
+
 [node name="MenuContainer" type="VBoxContainer" parent="." unique_id=1194082579]
 offset_left = 110.0
-offset_top = 460.0
+offset_top = 453.0
 offset_right = 430.0
-offset_bottom = 700.0
+offset_bottom = 814.0
 theme_override_constants/separation = 16
 
 [node name="PlayButton" type="Button" parent="MenuContainer" unique_id=1528597380]
@@ -90,11 +110,26 @@ text = "Drag & Aim"
 layout_mode = 2
 theme_override_font_sizes/font_size = 10
 
+[node name="Control" type="Control" parent="MenuContainer" unique_id=1556732156]
+layout_mode = 2
+
+[node name="Control2" type="Control" parent="MenuContainer" unique_id=185223658]
+layout_mode = 2
+
+[node name="Control3" type="Control" parent="MenuContainer" unique_id=1132999507]
+layout_mode = 2
+
+[node name="AudioSeparator" type="HSeparator" parent="MenuContainer" unique_id=1162646880]
+layout_mode = 2
+
+[node name="VolumeControls" parent="MenuContainer" unique_id=1162646881 instance=ExtResource("2_volctrl")]
+layout_mode = 2
+
 [node name="ModeDescLabel" type="Label" parent="." unique_id=1723434328]
 offset_left = 70.0
-offset_top = 705.0
+offset_top = 653.0
 offset_right = 470.0
-offset_bottom = 745.0
+offset_bottom = 693.0
 theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
 theme_override_font_sizes/font_size = 13
 text = "Tap anywhere to fire toward your cursor"
@@ -102,10 +137,10 @@ horizontal_alignment = 1
 
 [node name="HowToLabel" type="Label" parent="." unique_id=997420441]
 offset_left = 70.0
-offset_top = 845.0
+offset_top = 886.0
 offset_right = 470.0
-offset_bottom = 875.0
+offset_bottom = 916.0
 theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
 theme_override_font_sizes/font_size = 11
-text = "Survive as long as you can"
+text = "Survive as long as you can :)"
 horizontal_alignment = 1

@@ -131,3 +131,4 @@ disabled = true
 
 [node name="ExplosionSound" type="AudioStreamPlayer" parent="." unique_id=1191098200]
 stream = ExtResource("2_3e7g0")
+bus = &"SFX"

@@ -1,14 +1,16 @@
 [gd_scene format=3 uid="uid://pausemenu"]
 
 [ext_resource type="Script" uid="uid://re75htwstjiw" path="res://scripts/PauseMenu.gd" id="1_pausemenu"]
+[ext_resource type="PackedScene" path="res://scenes/VolumeControls.tscn" id="2_volctrl"]
 
 [node name="PauseMenu" type="CanvasLayer" unique_id=705514905]
-visible = false
 script = ExtResource("1_pausemenu")
 
 [node name="Background" type="ColorRect" parent="." unique_id=888188747]
-offset_right = 540.0
-offset_bottom = 960.0
+offset_left = -5.0
+offset_top = -6.0
+offset_right = 551.0
+offset_bottom = 965.0
 color = Color(0, 0, 0, 0.6)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1004662900]
@@ -17,10 +19,12 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -100.0
-offset_top = -140.0
-offset_right = 100.0
-offset_bottom = 140.0
+offset_left = -150.0
+offset_top = -224.5
+offset_right = 150.0
+offset_bottom = 224.5
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/separation = 16
 alignment = 1
 
@@ -45,6 +49,12 @@ text = "Restart Run"
 custom_minimum_size = Vector2(180, 48)
 layout_mode = 2
 text = "Main Menu"
+
+[node name="AudioSeparator" type="HSeparator" parent="VBoxContainer" unique_id=1162646882]
+layout_mode = 2
+
+[node name="VolumeControls" parent="VBoxContainer" unique_id=1162646883 instance=ExtResource("2_volctrl")]
+layout_mode = 2
 
 [node name="Control" type="Control" parent="VBoxContainer" unique_id=952039340]
 layout_mode = 2
