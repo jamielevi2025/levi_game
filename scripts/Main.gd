@@ -56,6 +56,7 @@ func _ready() -> void:
 	upgrade_screen.upgrade_chosen.connect(on_upgrade_chosen)
 	pause_menu = PAUSE_MENU_SCENE.instantiate()
 	add_child(pause_menu)
+	pause_menu.hide_pause()
 	pause_menu.resume_pressed.connect(func(): pause_menu.hide_pause())
 	pause_menu.debug_pressed.connect(on_debug_pressed)
 	pause_menu.restart_pressed.connect(func():
