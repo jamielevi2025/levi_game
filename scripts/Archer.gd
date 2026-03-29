@@ -329,7 +329,7 @@ func apply_upgrade(upgrade_id: String) -> void:
 				max_hp += 20.0
 		"freezing_shot":
 			has_slow = true
-			var factor_table: Array = [0.0, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60]
+			var factor_table: Array = [0, 0.85, 0.80, 0.75, 0.70, 0.65, 0.60, 0.55, 0.50, 0.45, 0.40]
 			var dur_table: Array    = [0.0,  1.5,  2.0,  2.0,  2.5,  3.0,  3.0,  3.0,  3.5,  3.5,  4.0]
 			slow_factor   = factor_table[mini(level, 10)]
 			slow_duration = dur_table[mini(level, 10)]
@@ -376,7 +376,7 @@ func apply_upgrade(upgrade_id: String) -> void:
 			explosive_radius = 70.0 + (level * 8.0)
 			var ratio_table: Array = [0.0, 0.30, 0.40, 0.50, 0.60, 0.75, 0.90, 1.0, 1.0, 1.0, 1.0]
 			explosive_damage_ratio = ratio_table[mini(level, 10)]
-			explosive_secondary    = level >= 8
+			explosive_secondary    = level >= 7
 			explosive_ignites      = level >= 9
 		"xp_shot":
 			has_xp_shot = true
