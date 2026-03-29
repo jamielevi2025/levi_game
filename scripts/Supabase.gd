@@ -45,6 +45,9 @@ func fetch_scores() -> void:
 	)
 	var headers = [
 		'apikey: ' + SUPABASE_KEY,
-		'Authorization: Bearer ' + SUPABASE_KEY
+		'Authorization: Bearer ' + SUPABASE_KEY,
+		'Accept: application/json',
+		'Content-Type: application/json',
+		'Accept-Encoding: identity'
 	]
 	http.request(SUPABASE_URL + '/rest/v1/scores?select=name,score,level,created_at&order=score.desc&limit=10', headers, HTTPClient.METHOD_GET, '')
