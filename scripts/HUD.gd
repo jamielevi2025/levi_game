@@ -7,7 +7,7 @@ signal menu_button_pressed
 @onready var wave_label: Label = $WaveInfoContainer/WaveLabel
 @onready var level_label: Label = $WaveInfoContainer/LevelLabel
 @onready var enemy_count_label: Label = $EnemyInfoContainer/EnemyCountLabel
-@onready var lives_container: Label = $LivesContainer
+@onready var lives_container: HBoxContainer = $LivesContainer
 @onready var xp_bar_fill: ColorRect = $XPBarFill
 @onready var player_level_label: Label = $PlayerLevelLabel
 @onready var menu_button: Button = $MenuButton
@@ -27,13 +27,16 @@ func update_enemy_count(count: int) -> void:
 
 
 func update_lives(current: int, maximum: int) -> void:
-	var text = ""
+	for child in lives_container.get_children():
+		child.queue_free()
+	var tex_full: Texture2D = load("res://assets/sprites/HeartFull.png")
+	var tex_empty: Texture2D = load("res://assets/sprites/HeartEmpty.png")
 	for i in range(maximum):
-		if i < current:
-			text += "\u2665"
-		else:
-			text += "\u2661"
-	lives_container.text = text
+		var heart = TextureRect.new()
+		heart.texture = tex_full if i < current else tex_empty
+		heart.custom_minimum_size = Vector2(16, 16)
+		heart.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		lives_container.add_child(heart)
 
 
 func update_xp(current: int, maximum: int, level: int) -> void:
