@@ -33,10 +33,10 @@ func on_scores_fetched(scores: Array) -> void:
 		name_label.text = str(score_data.get("name", "???"))
 		name_label.custom_minimum_size = Vector2(180, 0)
 		var score_label: Label = Label.new()
-		score_label.text = str(score_data.get("score", 0))
+		score_label.text = str(int(score_data.get("score", 0)))
 		score_label.custom_minimum_size = Vector2(100, 0)
 		var level_label: Label = Label.new()
-		level_label.text = "Lv." + str(score_data.get("level", 0))
+		level_label.text = "Lv." + str(int(score_data.get("level", 0)))
 		level_label.custom_minimum_size = Vector2(60, 0)
 		var color: Color
 		match i:

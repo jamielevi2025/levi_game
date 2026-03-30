@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 class_name Archer
 
-signal hp_changed(current_hp: float, max_hp: float)
+signal lives_changed(current_lives: int, max_lives: int)
 signal died
 signal xp_gained(amount: int)
 signal raw_xp_gained(amount: int)
@@ -13,11 +13,11 @@ var is_drawing: bool = false
 var drag_start: Vector2
 var max_drag_distance: float = 120.0
 var min_drag_distance: float = 20.0
-var max_hp: float = 100.0
-var current_hp: float = 100.0
-var is_dead: bool = false
-var invincibility_frames: float = 0.0
+var max_lives: int = 7
+var current_lives: int = 7
+var is_invincible: bool = false
 var invincibility_duration: float = 0.8
+var is_dead: bool = false
 var fire_cooldown: float = 0.0
 var base_fire_cooldown: float = 0.5
 var base_damage: float = 10.0
@@ -51,10 +51,6 @@ var explosive_damage_ratio: float = 0.3
 var explosive_secondary: bool = false
 var explosive_ignites: bool = false
 
-var has_leech: bool = false
-var leech_kill_hp: float = 0.0
-var leech_hit_hp: float = 0.0
-
 var has_poison: bool = false
 var poison_dps: float = 0.0
 var poison_duration: float = 0.0
@@ -76,7 +72,6 @@ var sniper_always_crit: bool = false
 var upgrade_levels: Dictionary = {}
 
 @onready var trajectory_line: Line2D = $TrajectoryLine
-@onready var health_bar_fill: ColorRect = $HealthBarContainer/HealthBarFill
 @onready var bow_sprite: AnimatedSprite2D = $BowSprite
 @onready var bow_sound: AudioStreamPlayer = $BowSound
 @onready var hurt_sound: AudioStreamPlayer = $HurtSound
@@ -90,13 +85,10 @@ var shot_anim_timer: float = 0.0
 func _ready() -> void:
 	add_to_group("player")
 	position = Vector2(270, 860)
-	hp_changed.connect(_on_hp_changed)
 	died.connect(_on_died)
 
 
 func _physics_process(delta: float) -> void:
-	if invincibility_frames > 0:
-		invincibility_frames -= delta
 	if fire_cooldown > 0:
 		fire_cooldown -= delta
 	if is_mouse_held and fire_cooldown <= 0:
@@ -253,10 +245,6 @@ func _spawn_arrow(dir: Vector2, power: float, damage_override: float = -1.0) -> 
 		arrow.explosive_damage_ratio = explosive_damage_ratio
 		arrow.explosive_secondary = explosive_secondary
 		arrow.explosive_ignites = explosive_ignites
-	if has_leech:
-		arrow.has_leech = true
-		arrow.leech_kill_hp = leech_kill_hp
-		arrow.leech_hit_hp = leech_hit_hp
 	if has_poison:
 		arrow.has_poison = true
 		arrow.poison_dps = poison_dps
@@ -272,24 +260,24 @@ func _spawn_arrow(dir: Vector2, power: float, damage_override: float = -1.0) -> 
 		arrow.has_xp_shot = true
 		arrow.xp_shot_amount = xp_shot_amount
 	arrow.xp_shot_hit.connect(func(amount: int): raw_xp_gained.emit(amount))
-	arrow.heal_requested.connect(func(amount: float): take_damage(-amount))
 	get_tree().root.add_child(arrow)
 
 
-func take_damage(amount: float) -> void:
-	if is_dead:
+func take_damage(amount: int = 1) -> void:
+	if is_dead or is_invincible:
 		return
-	if amount < 0:
-		current_hp = min(current_hp - amount, max_hp)
-		hp_changed.emit(current_hp, max_hp)
-		return
-	if invincibility_frames > 0:
-		return
-	current_hp -= amount
-	invincibility_frames = invincibility_duration
+	current_lives -= amount
+	current_lives = max(0, current_lives)
+	lives_changed.emit(current_lives, max_lives)
+	is_invincible = true
 	hurt_sound.play()
-	hp_changed.emit(current_hp, max_hp)
-	if current_hp <= 0:
+	var timer: Timer = Timer.new()
+	timer.wait_time = invincibility_duration
+	timer.one_shot = true
+	timer.timeout.connect(func(): is_invincible = false; timer.queue_free())
+	add_child(timer)
+	timer.start()
+	if current_lives <= 0:
 		is_dead = true
 		died.emit()
 
@@ -301,15 +289,15 @@ func apply_upgrade(upgrade_id: String) -> void:
 		"sharp_tips":
 			damage_multiplier += 0.15
 		"mend":
-			current_hp = min(current_hp + 25.0, max_hp)
-			hp_changed.emit(current_hp, max_hp)
+			current_lives = min(current_lives + 1, max_lives)
+			lives_changed.emit(current_lives, max_lives)
 		"xp_surge":
 			xp_multiplier += 0.25
 		"rapid_fire":
 			fire_rate_multiplier = max(0.2, fire_rate_multiplier * 0.90)
 		"emergency_rations":
-			current_hp = min(current_hp + 40.0, max_hp)
-			hp_changed.emit(current_hp, max_hp)
+			current_lives = min(current_lives + 2, max_lives)
+			lives_changed.emit(current_lives, max_lives)
 		"heavy_shot":
 			has_sniper = true
 			damage_multiplier = 1.0 + (level * 0.2) + (level * 0.02 * level)
@@ -319,14 +307,6 @@ func apply_upgrade(upgrade_id: String) -> void:
 				has_piercing = true
 			if level >= 9:
 				sniper_always_crit = true
-		"leech_shot":
-			has_leech = true
-			var kill_hp_table: Array = [0.0, 3.0, 5.0, 7.0, 9.0, 12.0, 15.0, 18.0, 22.0, 26.0, 30.0]
-			var hit_hp_table: Array  = [0.0, 0.0, 0.0, 1.0, 1.0,  2.0,  2.0,  3.0,  3.0,  4.0,  5.0]
-			leech_kill_hp = kill_hp_table[mini(level, 10)]
-			leech_hit_hp  = hit_hp_table[mini(level, 10)]
-			if level >= 10:
-				max_hp += 20.0
 		"freezing_shot":
 			has_slow = true
 			var factor_table: Array = [0, 0.85, 0.80, 0.75, 0.70, 0.65, 0.60, 0.55, 0.50, 0.45, 0.40]
@@ -382,10 +362,6 @@ func apply_upgrade(upgrade_id: String) -> void:
 			has_xp_shot = true
 			xp_shot_amount = level
 			xp_auto_collect_radius = 20.0 + ((level - 3) * 10.0) if level >= 3 else 0.0
-
-
-func _on_hp_changed(current: float, _max: float) -> void:
-	health_bar_fill.size.x = (current / max_hp) * 50.0
 
 
 func _on_died() -> void:

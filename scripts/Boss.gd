@@ -141,6 +141,7 @@ func fire_spread() -> void:
 
 
 func fire_bomb() -> void:
+	max_bombs = 1 + (current_level - 1) / 3
 	if bomb_scene == null or active_bombs >= max_bombs:
 		return
 	var landing_pos: Vector2 = Vector2(randf_range(80.0, 460.0), randf_range(350.0, 750.0))

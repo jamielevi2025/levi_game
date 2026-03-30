@@ -4,7 +4,7 @@ class_name BossProjectile
 
 var speed: float = 180.0
 var velocity: Vector2 = Vector2.ZERO
-var damage: float = 15.0
+var damage: int = 1
 var ignore_body: Node = null
 
 

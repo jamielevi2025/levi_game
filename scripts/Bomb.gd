@@ -19,7 +19,7 @@ var pre_blink_timer: float = 0.0
 var hurt_timer: float = 0.0
 var hurt_duration: float = 0.3
 var pre_hurt_animation: String = "active"
-var damage: float = 35.0
+var damage: int = 3
 var landing_position: Vector2
 var start_position: Vector2
 var drop_duration: float = 1.5

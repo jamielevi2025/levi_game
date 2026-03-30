@@ -7,7 +7,7 @@ signal died(death_position: Vector2, xp_value: int)
 var max_hp: float = 30.0
 var current_hp: float = 30.0
 var move_speed: float = 80.0
-var damage_on_contact: float = 10.0
+var damage_on_contact: int = 1
 var xp_value: int = 5
 var danger_line_y: float = 700.0
 var archer_position: Vector2 = Vector2(270, 860)
@@ -61,9 +61,15 @@ func _physics_process(delta: float) -> void:
 
 func on_body_entered(body: Node) -> void:
 	if body is Archer:
-		if body.has_method("take_damage"):
-			body.take_damage(damage_on_contact)
-		die()
+		die_on_contact(body)
+
+
+func die_on_contact(archer: Node) -> void:
+	if is_dead:
+		return
+	is_dead = true
+	archer.take_damage(damage_on_contact)
+	queue_free()
 
 
 func setup(hp: float, speed: float) -> void:

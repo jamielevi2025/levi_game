@@ -6,12 +6,11 @@ class_name UpgradeData
 static func get_all_upgrades() -> Array:
 	return [
 		{id = "sharp_tips",    name = "Sharp Tips",     description = "+15% damage",                                       tier = "common"},
-		{id = "mend",          name = "Mend",           description = "Restore 25 HP",                                     tier = "common"},
+		{id = "mend",          name = "Mend",           description = "Restore 1 life",                                    tier = "rare"},
 		{id = "xp_surge",      name = "XP Surge",       description = "+25% XP gain",                                      tier = "common"},
 		{id = "rapid_fire",    name = "Rapid Fire",     description = "Fire rate +10%",                                    tier = "common"},
 		{id = "piercing_shot", name = "Piercing Shot",  description = "Pierce 1 enemy, +5% pierce dmg",                    tier = "rare"},
 		{id = "freezing_shot", name = "Freezing Shot",  description = "Freezing: 15% slow for 1.5s",                        tier = "rare"},
-		{id = "leech_shot",    name = "Leech Shot",     description = "Kill: +3 HP",                                        tier = "rare"},
 		{id = "heavy_shot",    name = "Heavy Shot",     description = "+20% dmg, +5% fire delay",                           tier = "rare"},
 		{id = "poison_tip",    name = "Poison Tip",     description = "3 dps for 2s",                                       tier = "rare"},
 		{id = "multi_shot",    name = "Multi-Shot",     description = "+1 extra arrow",                                     tier = "epic"},
@@ -36,21 +35,12 @@ static func next_level_description(id: String, current_level: int) -> String:
 		"xp_surge":
 			return "+25% XP gain"
 		"mend":
-			return "Restore 25 HP"
+			return "Restore 1 life"
 		"rapid_fire":
 			return "Fire rate +15%"
 		"heavy_shot":
 			var dmg_pct: float = (next * 0.2 + next * 0.02 * next) * 100.0
 			return "+%.0f%% dmg, +%.0f%% fire delay" % [dmg_pct, next * 5.0]
-		"leech_shot":
-			var kill_hp: Array = [0, 3, 5, 7, 9, 12, 15, 18, 22, 26, 30]
-			var hit_hp: Array  = [0, 0, 0, 1, 1,  2,  2,  3,  3,  4,  5]
-			var k: int = kill_hp[mini(next, 10)]
-			var h: int = hit_hp[mini(next, 10)]
-			var s: String = "Kill:+" + str(k) + "HP  Hit:+" + str(h) + "HP"
-			if next >= 10:
-				s += "  MaxHP+20"
-			return s
 		"freezing_shot":
 			var factor: Array = [0, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
 			var dur: Array    = [0.0, 1.5, 2.0, 2.0, 2.5, 3.0, 3.0, 3.0, 3.5, 3.5, 4.0]
@@ -77,9 +67,16 @@ static func next_level_description(id: String, current_level: int) -> String:
 				s += "  +speed"
 			return s
 		"multi_shot":
-			var count: Array = [0, 1, 2, 2, 3, 3, 3, 4, 4, 5, 7]
-			var spread: float = 12.0 + next * 3.0
-			return "+" + str(count[mini(next, 10)]) + " arrows  " + str(int(spread)) + "° spread"
+			var count_table: Array = [0, 1, 1, 1, 2, 2, 3, 3, 4, 5, 6]
+			var dmg_table: Array = [0.0, 0.25, 0.50, 0.75, 0.75, 1.0, 1.0, 1.0, 1.0, 1.25, 1.25]
+			var cur_count: int = count_table[mini(current_level, 10)]
+			var next_count: int = count_table[mini(next, 10)]
+			var cur_dmg_pct: int = int(dmg_table[mini(current_level, 10)] * 100.0)
+			var next_dmg_pct: int = int(dmg_table[mini(next, 10)] * 100.0)
+			if next_count > cur_count:
+				return "+" + str(next_count) + " extra arrows at " + str(next_dmg_pct) + "% damage"
+			else:
+				return str(next_count) + " extra arrows — damage " + str(cur_dmg_pct) + "% \u2192 " + str(next_dmg_pct) + "%"
 		"explosive_tip":
 			var radius: float = 40.0 + next * 8.0
 			var ratio: Array = [0, 40, 50, 60, 75, 90, 110, 130, 150, 200, 300]

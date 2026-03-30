@@ -11,6 +11,7 @@ const BOMB_SCENE = preload("res://scenes/Bomb.tscn")
 const GAME_OVER_SCENE = preload("res://scenes/GameOver.tscn")
 const UPGRADE_SCREEN_SCENE = preload("res://scenes/UpgradeScreen.tscn")
 const PAUSE_MENU_SCENE = preload("res://scenes/PauseMenu.tscn")
+const ADMIN_PANEL_SCENE = preload("res://scenes/AdminPanel.tscn")
 
 var current_level: int = 1
 var current_wave: int = 0
@@ -30,13 +31,15 @@ var hud: HUD = null
 var game_over_screen: GameOver = null
 var upgrade_screen: UpgradeScreen = null
 var pause_menu: PauseMenu = null
+var admin_panel: AdminPanel = null
 
 
 func _ready() -> void:
 	$Archer.arrow_scene = preload("res://scenes/Arrow.tscn")
 	hud = HUD_SCENE.instantiate()
 	add_child(hud)
-	$Archer.hp_changed.connect(hud.update_player_hp)
+	$Archer.lives_changed.connect(hud.update_lives)
+	hud.update_lives(7, 7)
 	$Archer.died.connect(on_archer_died)
 	$Archer.xp_gained.connect(on_xp_collected)
 	$Archer.raw_xp_gained.connect(on_raw_xp_collected)
@@ -69,6 +72,14 @@ func _ready() -> void:
 		Engine.time_scale = 1.0
 		get_tree().change_scene_to_file("res://scenes/MainMenu.tscn")
 	)
+	admin_panel = ADMIN_PANEL_SCENE.instantiate()
+	add_child(admin_panel)
+	admin_panel.kill_all.connect(_on_admin_kill_all)
+	admin_panel.spawn_boss.connect(_on_admin_spawn_boss)
+	admin_panel.next_level.connect(_on_admin_next_level)
+	admin_panel.grant_xp.connect(on_xp_collected)
+	admin_panel.instant_level_up.connect(_on_admin_instant_level_up)
+	admin_panel.set_level.connect(_on_admin_set_level)
 	var safety_timer: Timer = Timer.new()
 	safety_timer.wait_time = 2.0
 	safety_timer.autostart = true
@@ -111,7 +122,13 @@ func start_boss_phase() -> void:
 	boss.bomb_scene = BOMB_SCENE
 	boss.archer_ref = $Archer
 	boss.current_level = current_level
-	boss.setup(round(150.0 * pow(1.30, current_level - 1)), 60.0)
+	var boss_hp: float
+	if current_level <= 10:
+		boss_hp = round(150.0 * pow(1.45, current_level - 1))
+	else:
+		var boss_base_at_10: float = round(150.0 * pow(1.45, 9))
+		boss_hp = round(boss_base_at_10 * pow(1.6, current_level - 10))
+	boss.setup(boss_hp, 60.0)
 	boss.died.connect(on_boss_died)
 	add_child(boss)
 	hud.update_wave(current_wave, current_level)
@@ -134,7 +151,12 @@ func on_boss_died(death_position: Vector2, xp_amount: int) -> void:
 func spawn_enemy() -> void:
 	var enemy: BasicEnemy = ENEMY_SCENE.instantiate()
 	enemy.position = Vector2(randf_range(40.0, 500.0), -40.0)
-	var hp: float = round(30.0 * pow(1.25, current_level - 1))
+	var hp: float
+	if current_level <= 10:
+		hp = round(30.0 * pow(1.25, current_level - 1))
+	else:
+		var base_at_10: float = round(30.0 * pow(1.25, 9))
+		hp = round(base_at_10 * pow(1.6, current_level - 10))
 	var speed: float = min(80.0 * pow(1.1, current_level - 1), 300.0)
 	enemy.setup(hp, speed)
 	enemy.died.connect(on_enemy_died)
@@ -195,26 +217,67 @@ func _unhandled_input(event: InputEvent) -> void:
 			pause_menu.hide_pause()
 		else:
 			pause_menu.show_pause()
-	elif event.keycode == KEY_K:
-		for enemy in get_tree().get_nodes_in_group("enemies"):
-			if enemy.has_method("die"):
-				enemy.die()
-	elif event.keycode == KEY_B:
-		for enemy in get_tree().get_nodes_in_group("enemies"):
-			enemy.queue_free()
-		if _spawn_timer != null:
-			_spawn_timer.stop()
-			_spawn_timer.queue_free()
-			_spawn_timer = null
-		_remaining_spawns = 0
-		enemies_alive = 0
-		is_wave_active = false
-		current_wave = 3
-		start_boss_phase()
-	elif event.keycode == KEY_N:
-		for boss in get_tree().get_nodes_in_group("bosses"):
-			boss.queue_free()
-		on_boss_died(Vector2(270, 160), 0)
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey and event.keycode == KEY_D and event.pressed and not event.echo:
+		if Input.is_key_pressed(KEY_SHIFT):
+			if admin_panel.visible:
+				admin_panel.hide_panel()
+			else:
+				admin_panel.show_panel(build_stats_text())
+
+
+func _on_admin_kill_all() -> void:
+	for enemy in get_tree().get_nodes_in_group("enemies"):
+		if enemy.has_method("die"):
+			enemy.die()
+	enemies_alive = 0
+	hud.update_enemy_count(0)
+
+
+func _on_admin_spawn_boss() -> void:
+	for enemy in get_tree().get_nodes_in_group("enemies"):
+		enemy.queue_free()
+	if _spawn_timer != null:
+		_spawn_timer.stop()
+		_spawn_timer.queue_free()
+		_spawn_timer = null
+	_remaining_spawns = 0
+	enemies_alive = 0
+	is_wave_active = false
+	current_wave = 3
+	start_boss_phase()
+
+
+func _on_admin_next_level() -> void:
+	for boss in get_tree().get_nodes_in_group("bosses"):
+		boss.queue_free()
+	on_boss_died(Vector2(270, 160), 0)
+
+
+func _on_admin_instant_level_up() -> void:
+	current_xp = xp_to_level
+	on_xp_collected(0)
+
+
+func _on_admin_set_level(level: int) -> void:
+	current_level = level
+	print("Admin: level set to ", level)
+
+
+func build_stats_text() -> String:
+	var lines: Array = [
+		"Level: " + str(current_level) + "  Wave: " + str(current_wave),
+		"Enemies alive: " + str(enemies_alive),
+		"Player XP: " + str(current_xp) + "/" + str(xp_to_level),
+		"Player level: " + str(player_level),
+		"Damage mult: " + str(snapped($Archer.damage_multiplier, 0.01)),
+		"Fire rate mult: " + str(snapped($Archer.fire_rate_multiplier, 0.01)),
+		"Pierce count: " + str($Archer.pierce_count),
+		"Has multi-shot: " + str($Archer.has_multi_shot),
+	]
+	return "\n".join(lines)
 
 
 func on_debug_pressed() -> void:

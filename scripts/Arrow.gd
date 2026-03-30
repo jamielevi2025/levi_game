@@ -4,7 +4,6 @@ class_name Arrow
 
 const HIT_EFFECT_SCENE = preload("res://scenes/HitEffect.tscn")
 
-signal heal_requested(amount: float)
 signal xp_shot_hit(amount: int)
 
 @export var base_speed: float = 800.0
@@ -25,9 +24,6 @@ var explosive_damage_ratio: float = 0.3
 var explosive_secondary: bool = false
 var explosive_ignites: bool = false
 var pierced_enemies: Array = []
-var has_leech: bool = false
-var leech_kill_hp: float = 0.0
-var leech_hit_hp: float = 0.0
 var has_poison: bool = false
 var poison_dps: float = 5.0
 var poison_duration: float = 3.0
@@ -93,9 +89,6 @@ func _on_hitbox_body_entered(body: Node2D) -> void:
 	if not body.has_method("take_damage"):
 		return
 
-	var hp_before: float = body.current_hp if "current_hp" in body else 0.0
-	var is_lethal: bool = (hp_before - damage) <= 0
-
 	var _result = body.take_damage(damage)
 	var damage_applied: bool = _result == null or _result == true
 
@@ -119,12 +112,6 @@ func _on_hitbox_body_entered(body: Node2D) -> void:
 				if e != body and e.global_position.distance_to(body.global_position) < 120.0:
 					if e.has_method("apply_slow"):
 						e.apply_slow(slow_factor, slow_duration)
-
-	if has_leech:
-		if leech_hit_hp > 0.0:
-			heal_requested.emit(leech_hit_hp)
-		if is_lethal and leech_kill_hp > 0.0:
-			heal_requested.emit(leech_kill_hp)
 
 	if has_xp_shot and xp_shot_amount > 0:
 		xp_shot_hit.emit(xp_shot_amount)
