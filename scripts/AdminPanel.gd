@@ -5,6 +5,7 @@ class_name AdminPanel
 signal kill_all
 signal spawn_boss
 signal next_level
+signal dps_check_pressed
 signal grant_xp(amount: int)
 signal instant_level_up
 signal set_level(level: int)
@@ -17,6 +18,7 @@ func _ready() -> void:
 	$PanelContainer/MarginContainer/VBoxContainer/BtnKillAll.pressed.connect(func(): kill_all.emit())
 	$PanelContainer/MarginContainer/VBoxContainer/BtnSpawnBoss.pressed.connect(func(): spawn_boss.emit())
 	$PanelContainer/MarginContainer/VBoxContainer/BtnNextLevel.pressed.connect(func(): next_level.emit())
+	$PanelContainer/MarginContainer/VBoxContainer/BtnDPSCheck.pressed.connect(func(): dps_check_pressed.emit(); hide_panel())
 	$PanelContainer/MarginContainer/VBoxContainer/BtnGrantXP.pressed.connect(func(): grant_xp.emit(50))
 	$PanelContainer/MarginContainer/VBoxContainer/BtnLevelUp.pressed.connect(func(): instant_level_up.emit())
 	$PanelContainer/MarginContainer/VBoxContainer/LevelRow/BtnSetLevel.pressed.connect(func(): set_level.emit(int(level_spin_box.value)))

@@ -17,7 +17,7 @@ var is_dead: bool = false
 var has_arrived: bool = false
 var is_entering: bool = true
 var hurt_timer: float = 0.0
-var hurt_duration: float = 0.4
+var hurt_duration: float = 0.1
 var pre_hurt_animation: String = 'idle'
 var is_dying: bool = false
 var archer_ref: Node = null
@@ -142,6 +142,7 @@ func fire_spread() -> void:
 
 func fire_bomb() -> void:
 	max_bombs = 1 + (current_level - 1) / 3
+	print("max_bombs: ", max_bombs, " active_bombs: ", active_bombs)
 	if bomb_scene == null or active_bombs >= max_bombs:
 		return
 	var landing_pos: Vector2 = Vector2(randf_range(80.0, 460.0), randf_range(350.0, 750.0))

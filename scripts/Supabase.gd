@@ -52,6 +52,51 @@ func _submit_score_native(player_name: String, score: int, level: int) -> void:
 	http.request(SUPABASE_URL + '/rest/v1/scores', headers, HTTPClient.METHOD_POST, body)
 
 
+func submit_score_with_dps(player_name: String, score: int, level: int, dps: float) -> void:
+	if OS.get_name() == "Web":
+		var body_str = JSON.stringify({"name": player_name, "score": score, "level": level, "dps": dps})
+		var js_code = """
+			fetch('https://ctmdnopvlvrdhcxbtoyd.supabase.co/rest/v1/scores', {
+				method: 'POST',
+				headers: {
+					'apikey': '""" + SUPABASE_KEY + """',
+					'Authorization': 'Bearer """ + SUPABASE_KEY + """',
+					'Content-Type': 'application/json',
+					'Prefer': 'return=minimal'
+				},
+				body: '""" + body_str.replace("'", "\\'") + """'
+			})
+			.then(r => { window._supabase_submit_done = true; })
+			.catch(err => { console.error('Submit error:', err); window._supabase_submit_done = true; });
+			window._supabase_submit_done = false;
+		"""
+		JavaScriptBridge.eval(js_code)
+		await get_tree().create_timer(2.0).timeout
+		score_submitted.emit()
+	else:
+		_submit_score_with_dps_native(player_name, score, level, dps)
+
+
+func _submit_score_with_dps_native(player_name: String, score: int, level: int, dps: float) -> void:
+	var http = HTTPRequest.new()
+	add_child(http)
+	http.request_completed.connect(func(result, code, headers, body):
+		http.queue_free()
+		if code == 201:
+			score_submitted.emit()
+		else:
+			print('Submit error: ', code)
+	)
+	var body = JSON.stringify({'name': player_name, 'score': score, 'level': level, 'dps': dps})
+	var headers = [
+		'Content-Type: application/json',
+		'apikey: ' + SUPABASE_KEY,
+		'Authorization: Bearer ' + SUPABASE_KEY,
+		'Prefer: return=minimal'
+	]
+	http.request(SUPABASE_URL + '/rest/v1/scores', headers, HTTPClient.METHOD_POST, body)
+
+
 func fetch_scores() -> void:
 	if OS.get_name() == "Web":
 		var js_code = """

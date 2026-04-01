@@ -55,9 +55,9 @@ color = Color(0.2, 0.2, 0.2, 1)
 
 [node name="XPBarFill" type="ColorRect" parent="." unique_id=1775591286]
 offset_left = 170.0
-offset_top = 936.0
+offset_top = 934.0
 offset_right = 170.0
-offset_bottom = 944.0
+offset_bottom = 942.0
 color = Color(0.4, 0.9, 0.2, 1)
 
 [node name="XPLabel" type="Label" parent="." unique_id=727937140]

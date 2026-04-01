@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bo5do83h7d0yt" path="res://scripts/Archer.gd" id="1_archer"]
 [ext_resource type="Texture2D" uid="uid://bqvipdelubp88" path="res://assets/sprites/Bow.png" id="3_bow"]
 [ext_resource type="AudioStream" uid="uid://bwua8p5ubkmqu" path="res://assets/audio/8-bit_retro_click.mp3" id="3_cgghf"]
-[ext_resource type="AudioStream" path="res://assets/audio/8-bit_retro_explode_1.mp3" id="4_hurtsnd"]
+[ext_resource type="AudioStream" uid="uid://4m3qx5yeko0y" path="res://assets/audio/8-bit_retro_explode_1.mp3" id="4_hurtsnd"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
 radius = 32.0
@@ -50,7 +50,6 @@ animations = [{
 
 [node name="Archer" type="CharacterBody2D" unique_id=179516639]
 collision_layer = 2
-collision_mask = 1
 script = ExtResource("1_archer")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=941728575]
@@ -91,10 +90,8 @@ frame_progress = 0.18902288
 
 [node name="BowSound" type="AudioStreamPlayer" parent="." unique_id=1162646862]
 stream = ExtResource("3_cgghf")
-volume_db = 0.0
 bus = &"SFX"
 
 [node name="HurtSound" type="AudioStreamPlayer" parent="." unique_id=1162646863]
 stream = ExtResource("4_hurtsnd")
 bus = &"SFX"
-volume_db = 0.0

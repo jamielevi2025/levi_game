@@ -9,14 +9,14 @@ static func get_all_upgrades() -> Array:
 		{id = "mend",          name = "Mend",           description = "Restore 1 life",                                    tier = "rare"},
 		{id = "xp_surge",      name = "XP Surge",       description = "+25% XP gain",                                      tier = "common"},
 		{id = "rapid_fire",    name = "Rapid Fire",     description = "Fire rate +10%",                                    tier = "common"},
-		{id = "piercing_shot", name = "Piercing Shot",  description = "Pierce 1 enemy, +5% pierce dmg",                    tier = "rare"},
-		{id = "freezing_shot", name = "Freezing Shot",  description = "Freezing: 15% slow for 1.5s",                        tier = "rare"},
-		{id = "heavy_shot",    name = "Heavy Shot",     description = "+20% dmg, +5% fire delay",                           tier = "rare"},
-		{id = "poison_tip",    name = "Poison Tip",     description = "3 dps for 2s",                                       tier = "rare"},
-		{id = "multi_shot",    name = "Multi-Shot",     description = "+1 extra arrow",                                     tier = "epic"},
-		{id = "explosive_tip", name = "Explosive Tip",  description = "30% AOE dmg",                               tier = "epic"},
-		{id = "bouncing_shot", name = "Bouncing Shot",  description = "Bounce 1 time",                                      tier = "epic"},
-		{id = "xp_shot",       name = "XP Shot",        description = "+1 XP per hit",                                      tier = "legendary"},
+		{id = "piercing_shot", name = "Piercing Shot",  description = "Pierce 1 enemy, +5% pierce dmg",                    tier = "epic"},
+		{id = "freezing_shot", name = "Freezing Shot",  description = "Freezing: 15% slow for 1.5s",                       tier = "rare"},
+		{id = "heavy_shot",    name = "Heavy Shot",     description = "+20% dmg, +5% fire delay",                          tier = "rare"},
+		{id = "poison_tip",    name = "Poison Tip",     description = "3 dps for 2s",                                      tier = "rare"},
+		{id = "multi_shot",    name = "Multi-Shot",     description = "+1 extra arrow",                                    tier = "epic"},
+		{id = "explosive_tip", name = "Explosive Tip",  description = "30% AOE dmg",                                       tier = "epic"},
+		{id = "bouncing_shot", name = "Bouncing Shot",  description = "Bounce 1 time",                                     tier = "epic"},
+		{id = "xp_shot",       name = "XP Shot",        description = "+1 XP per hit",                                     tier = "legendary"},
 	]
 
 
@@ -68,7 +68,7 @@ static func next_level_description(id: String, current_level: int) -> String:
 			return s
 		"multi_shot":
 			var count_table: Array = [0, 1, 1, 1, 2, 2, 3, 3, 4, 5, 6]
-			var dmg_table: Array = [0.0, 0.25, 0.50, 0.75, 0.75, 1.0, 1.0, 1.0, 1.0, 1.25, 1.25]
+			var dmg_table: Array = [0.0, 0.25, 0.50, 0.75, 0.50, .75, .75, .5, .75, 1, 1]
 			var cur_count: int = count_table[mini(current_level, 10)]
 			var next_count: int = count_table[mini(next, 10)]
 			var cur_dmg_pct: int = int(dmg_table[mini(current_level, 10)] * 100.0)
@@ -107,9 +107,9 @@ static func get_random_upgrades(count: int, upgrade_levels_dict: Dictionary = {}
 	var weights: Array = []
 	for u in available:
 		match u.tier:
-			"common":    weights.append(63)
-			"rare":      weights.append(25)
-			"epic":      weights.append(10)
+			"common":    weights.append(57)
+			"rare":      weights.append(32)
+			"epic":      weights.append(9)
 			"legendary": weights.append(2)
 
 	var result: Array = []

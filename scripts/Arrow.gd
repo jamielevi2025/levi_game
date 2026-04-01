@@ -131,16 +131,26 @@ func _on_hitbox_body_entered(body: Node2D) -> void:
 
 
 func _on_hitbox_area_entered(area: Node2D) -> void:
-	if not area is BossProjectile:
+	if area is BossProjectile:
+		spawn_hit_effect(area.global_position)
+		if is_explosive:
+			explode()
+		area.queue_free()
+		if pierce_count > 0:
+			pierce_count -= 1
+		else:
+			queue_free()
 		return
-	spawn_hit_effect(area.global_position)
-	if is_explosive:
-		explode()
-	area.queue_free()
-	if pierce_count > 0:
-		pierce_count -= 1
-	else:
-		queue_free()
+	var parent = area.get_parent()
+	if parent != null and parent.is_in_group("dps_dummy"):
+		parent.take_damage(damage)
+		spawn_hit_effect(area.global_position)
+		if is_explosive:
+			explode()
+		if pierce_count > 0:
+			pierce_count -= 1
+		else:
+			queue_free()
 
 
 func spawn_hit_effect(pos: Vector2) -> void:

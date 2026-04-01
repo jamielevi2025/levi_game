@@ -1,0 +1,76 @@
+[gd_scene format=3 uid="uid://dpsdummy"]
+
+[ext_resource type="Script" uid="uid://tot0n5bcl1g8" path="res://scripts/DPSDummy.gd" id="1_dpsdummy"]
+[ext_resource type="Texture2D" uid="uid://c52lt4md8oafl" path="res://assets/sprites/BrownSlime.png" id="2_yowl8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1vi4w"]
+atlas = ExtResource("2_yowl8")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jhx5h"]
+atlas = ExtResource("2_yowl8")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bbkxx"]
+atlas = ExtResource("2_yowl8")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1vi4w")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jhx5h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bbkxx")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1"]
+radius = 30.0
+
+[node name="DPSDummy" type="Node2D" unique_id=863965880]
+script = ExtResource("1_dpsdummy")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=680673723]
+scale = Vector2(5.25, 5.25)
+sprite_frames = SubResource("SpriteFrames_1")
+animation = &"hurt"
+autoplay = "idle"
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=269038288]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=2069492996]
+shape = SubResource("CircleShape2D_1")
+
+[node name="TimerLabel" type="Label" parent="." unique_id=2087391477]
+custom_minimum_size = Vector2(120, 30)
+offset_left = -60.0
+offset_top = -80.0
+offset_right = -60.0
+offset_bottom = -80.0
+theme_override_font_sizes/font_size = 24
+text = "30s"
+horizontal_alignment = 1
+
+[node name="DPSLabel" type="Label" parent="." unique_id=1124182987]
+modulate = Color(0.9, 0.7, 0.2, 1)
+custom_minimum_size = Vector2(120, 20)
+offset_left = -60.0
+offset_top = -55.0
+offset_right = -60.0
+offset_bottom = -55.0
+theme_override_font_sizes/font_size = 14
+text = "DPS: 0"
+horizontal_alignment = 1

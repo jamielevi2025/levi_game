@@ -321,7 +321,7 @@ func apply_upgrade(upgrade_id: String) -> void:
 		"poison_tip":
 			has_poison = true
 			var dps_table: Array = [0.0, 3.0, 4.0, 5.0, 6.0, 8.0, 10.0, 10.0, 12.0, 12.0, 15.0]
-			var dur_table: Array = [0.0, 2.0, 2.5, 3.0, 3.0, 3.5,  3.5,  3.5,  4.0,  4.0,  5.0]
+			var dur_table: Array = [0.0, 3.0, 3.5, 4.0, 4.0, 5.5, 5.5, 6.5, 7.0, 7.0, 8.0]
 			poison_dps      = dps_table[mini(level, 10)]
 			poison_duration = dur_table[mini(level, 10)]
 			poison_spreads  = level >= 7
@@ -347,7 +347,7 @@ func apply_upgrade(upgrade_id: String) -> void:
 		"multi_shot":
 			has_multi_shot = true
 			var count_table: Array  = [0, 1, 1, 1, 2, 2, 3, 3, 4, 5, 6]
-			var dmg_table: Array    = [0.0, 0.25, 0.50, 0.75, 0.75, 1.0, 1.0, 1.0, 1.0, 1.25, 1.25]
+			var dmg_table: Array    = [0.0, 0.25, 0.50, 0.75, 0.50, .75, .75, .5, .75, 1, 1]
 			multi_shot_count  = count_table[mini(level, 10)]
 			multi_shot_damage = dmg_table[mini(level, 10)]
 			multi_shot_spread = 12.0 + (level * 3.0)
